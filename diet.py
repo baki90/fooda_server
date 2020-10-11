@@ -20,7 +20,7 @@ def nutrient(foodname):
     if len(result) >0:
         return result[0]
     else:
-        return 'fail'
+        return 'false'
 
 class AnalyzeDiet(Resource):
     def post(self): #if using post method
@@ -48,3 +48,32 @@ class UploadDiet(Resource):
 
         return {"result" : "success"}
         
+#날짜, 유저에 대한 하루 총 식사량 반환
+class totalDiet(Resorce):
+    def get(self):
+        email = str(request.args.get('email'))
+        date = request.args.get('datetime')
+
+        #해당 날짜의 섭취한 음식을 모두 빼내고
+        sql = "select * from diet where id = '%s' and DATE(date)='%s'"%(email, date)
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        kcal = 0
+        tan =0
+        dan =0
+        ji = 0
+        if len(result) >0:
+            for res in result:
+                food_id = int(['food_id'])
+                sql = "select * from food where food_id = %d"%(food_id)
+                cursor.execute(sql)
+                out = cursor.fetchall()
+                kcal += out['calories']
+                tan += out['carbohydrate']
+                dan += out['protein']
+                ji += out['fat']
+            
+
+        else:
+            return {"result":"fail"}
+
