@@ -1,6 +1,6 @@
 #about user
 from flask_restful import Resource, Api
-from flask import request
+from flask import request, jsonify
 import db
 import utils
 
@@ -48,32 +48,48 @@ class UploadDiet(Resource):
 
         return {"result" : "success"}
         
-#날짜, 유저에 대한 하루 총 식사량 반환
-class totalDiet(Resorce):
+#날짜, 유저에 대한 하루 총 칼로리량 반환
+class TotalDiet(Resource):
     def get(self):
         email = str(request.args.get('email'))
         date = request.args.get('datetime')
 
+        userid = utils.userId(email)
+        kicho = utils.userhcal(email)
         #해당 날짜의 섭취한 음식을 모두 빼내고
-        sql = "select * from diet where id = '%s' and DATE(date)='%s'"%(email, date)
+        sql = "select * from diet where user_id = %d and DATE(date)='%s'"%(userid, date)
         cursor.execute(sql)
         result = cursor.fetchall()
+        print(result)
         kcal = 0
         tan =0
         dan =0
         ji = 0
+
         if len(result) >0:
             for res in result:
-                food_id = int(['food_id'])
+                food_id = int(res['food_id'])
                 sql = "select * from food where food_id = %d"%(food_id)
                 cursor.execute(sql)
-                out = cursor.fetchall()
+                out = cursor.fetchall()[0]
                 kcal += out['calories']
                 tan += out['carbohydrate']
                 dan += out['protein']
                 ji += out['fat']
             
+            return {"result" : "success", "calories" : kcal, "carbohydrate":tan, "protein":dan, "fat": ji, "kicho" : kicho}
 
         else:
             return {"result":"fail"}
 
+class TotalDietList(Resource):
+     def get(self):
+        email = str(request.args.get('email'))
+        date = request.args.get('datetime')
+        userid = utils.userId(email)
+
+        sql = "select d.day as day, f.korean as food_name, f.calories as cal, f.gram as gram from diet as d JOIN food as f on d.food_id = f.food_id where user_id= %d and DATE(date)='%s' ORDER BY day "%(userid, date)
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        
+        return result

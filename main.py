@@ -6,10 +6,10 @@ import json
 
 
 #import using file (users.py 파일의 Users class)
-from diet import AnalyzeDiet, UploadDiet
+from diet import AnalyzeDiet, UploadDiet, TotalDiet,TotalDietList
 from login import Login
 from register import Register
-from user import User
+from user import User, UserHcal
 
 app = Flask(__name__)
 CORS(app)
@@ -24,9 +24,13 @@ if __name__ == '__main__':
     #앞으로 resource 추가할 때, 아래와 같이 추가하면 됨!
     api.add_resource(AnalyzeDiet, '/analyzeDiet')
     api.add_resource(UploadDiet, '/uploadDiet')
+    api.add_resource(TotalDiet, '/totalDiet')
+    api.add_resource(TotalDietList, '/totalDietList')
     api.add_resource(Register, '/register')
     api.add_resource(Login, '/login')
     api.add_resource(User, '/user')
+    api.add_resource(UserHcal, '/userHcal')
+
 
     port = os.getenv('PORT', 3000)
     app.run(host='0.0.0.0', port = port)
