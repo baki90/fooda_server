@@ -5,12 +5,12 @@ import utils
 
 class Login(Resource):
     def post(self): #if using post method
-        email = request.form['email']
+        email = str(request.form['email'])
         password = request.form['password']
-
+        
         if utils.isUser(email):
             if utils.userLogin(email, password):
-                return {"result": "success", "msg": "로그인에 성공했습니다.", "token": 'token'} 
+                return {"result": "success", "msg": "로그인에 성공했습니다.", "token": email} 
             else:
                 return {"result": "fail", "msg": "비밀번호가 틀렸습니다."} 
         else :

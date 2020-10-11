@@ -19,3 +19,11 @@ def userLogin(userid, password):
             return True
         else: return False
     else: return False
+
+def userId(userid):
+    sql = "SELECT * FROM user WHERE email='%s'"%(userid)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if len(result) >0:
+        return result[0]['id']
+    else: return False

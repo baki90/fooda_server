@@ -6,8 +6,8 @@ import json
 
 
 #import using file (users.py 파일의 Users class)
-from diet import AnalyzeDiet
-from user import Login
+from diet import AnalyzeDiet, UploadDiet
+from login import Login
 from register import Register
 
 app = Flask(__name__)
@@ -22,6 +22,7 @@ if __name__ == '__main__':
     #Users : Class name, /users: Resource url
     #앞으로 resource 추가할 때, 아래와 같이 추가하면 됨!
     api.add_resource(AnalyzeDiet, '/analyzeDiet')
+    api.add_resource(UploadDiet, '/uploadDiet')
     api.add_resource(Register, '/register')
     api.add_resource(Login, '/login')
 
