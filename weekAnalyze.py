@@ -22,4 +22,28 @@ def weekAnalyze(userid):
     db.close(conn)
     return result['car'], result['pro'], result['fat']
 
-print(weekAnalyze(5))
+def personType(userid):
+    tan, dan, ji = weekAnalyze(userid)
+    total = tan + dan + ji
+    tan /= total 
+    dan /= total 
+    ji /= total
+    style = ''
+    if tan > 0.6:
+        style += '탄수화물 과다 '
+    elif tan < 0.5:
+        style += '탄수화물 과소 '
+    if dan > 0.2:
+        style += '단백질 과다 '
+    elif dan < 0.1:
+        style += '단백질 과소 '
+    if ji > 0.2:
+        style += '지방 과다 '
+    elif ji < 0.1:
+        style += '지방 과소 '
+
+    if style=='':
+        style = '정상 식습관 '
+
+    print(style)
+    return style

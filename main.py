@@ -10,6 +10,7 @@ from diet import AnalyzeDiet, UploadDiet, TotalDiet,TotalDietList
 from login import Login
 from register import Register
 from user import User, UserHcal
+from recommend import AnalyzePerson
 
 app = Flask(__name__)
 CORS(app)
@@ -30,6 +31,8 @@ if __name__ == '__main__':
     api.add_resource(Login, '/login')
     api.add_resource(User, '/user')
     api.add_resource(UserHcal, '/userHcal')
+    api.add_resource(AnalyzePerson, '/analyzePerson')
+
 
 
     port = os.getenv('PORT', 3000)
