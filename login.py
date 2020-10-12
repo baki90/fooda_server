@@ -10,6 +10,7 @@ class Login(Resource):
         
         if utils.isUser(email):
             if utils.userLogin(email, password):
+                print('hello')
                 return {"result": "success", "msg": "로그인에 성공했습니다.", "token": email} 
             else:
                 return {"result": "fail", "msg": "비밀번호가 틀렸습니다."} 

@@ -17,11 +17,14 @@ class Register(Resource):
         if utils.isUser(email):
             return {"result": "fail", "msg": "이미 존재하는 아이디입니다."} 
         else:
-            cursor =db.connect()
+            
+            conn = db.connect()
+            cursor = conn.cursor()
             sql = "insert into user values ('%s', '%s', %d, %f, %f, '%c', 0, 0, '%s')"%(email, name,age,height,weight,sex, password)
             print(sql)
             cursor.execute(sql)
-            db.conn.commit()
-            return {"result": "success", "msg": "회원가입이 완료되었습니다.", "token": 'token'} 
+            conn.commit()
+            db.close(conn)
+            return {"result": "success", "msg": "회원가입이 완료되었습니다.", "token": email} 
 
         

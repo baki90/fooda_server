@@ -1,6 +1,9 @@
 import pymysql
 
-conn = pymysql.connect(
+
+
+def connect():
+    conn = pymysql.connect(
     host='localhost',
     user='root',
     password='',
@@ -8,12 +11,13 @@ conn = pymysql.connect(
     charset='utf8',
     cursorclass=pymysql.cursors.DictCursor)
 
+    return conn
 
-def connect():
-    return conn.cursor()
+def close(conn):
+    conn.close()
 
 def userinfo(id):
-    cursor = connect()
+    cursor = connect().cursor()
     sql = "SELECT * FROM foodai WHERE id = '%s'"%(id)
     cursor.execute(sql)
     result = cursor.fetchall()

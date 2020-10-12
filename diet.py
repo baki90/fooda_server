@@ -10,13 +10,17 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import yolo.detect as Detector
 
-cursor = db.connect()
 
 def nutrient(foodname):
+        
+    conn = db.connect()
+    cursor = conn.cursor()
+
     sql = "select food_id, korean as food_name, calories, carbohydrate, protein, fat, gram from food where food_name='%s'"%(foodname)
     print(sql)
     cursor.execute(sql)
     result = cursor.fetchall()
+    db.close(conn)
     if len(result) >0:
         return result[0]
     else:
@@ -38,13 +42,16 @@ class UploadDiet(Resource):
         foodid = request.form['food_id']
         email = str(request.form['email'])
         day = request.form['day']
-
+        print(email)
         userid = utils.userId(email)
-
+        print(userid)    
+        conn = db.connect() 
+        cursor = conn.cursor()
         sql = "insert into diet(user_id, date, day, food_id) values(%d, NOW(), %d, %d)"%(int(userid), int(day), int(foodid))
         print(sql)
         cursor.execute(sql)
-        db.conn.commit()
+        conn.commit()
+        db.close(conn)
 
         return {"result" : "success"}
         
@@ -53,7 +60,10 @@ class TotalDiet(Resource):
     def get(self):
         email = str(request.args.get('email'))
         date = request.args.get('datetime')
-
+        
+        conn = db.connect()
+        cursor = conn.cursor()
+        
         userid = utils.userId(email)
         kicho = utils.userhcal(email)
         #해당 날짜의 섭취한 음식을 모두 빼내고
@@ -76,10 +86,11 @@ class TotalDiet(Resource):
                 tan += out['carbohydrate']
                 dan += out['protein']
                 ji += out['fat']
-            
+            db.close(conn)
             return {"result" : "success", "calories" : kcal, "carbohydrate":tan, "protein":dan, "fat": ji, "kicho" : kicho}
 
         else:
+            db.close(conn)
             return {"result":"fail"}
 
 class TotalDietList(Resource):
@@ -87,9 +98,13 @@ class TotalDietList(Resource):
         email = str(request.args.get('email'))
         date = request.args.get('datetime')
         userid = utils.userId(email)
-
+        print(userid)
+        
+        conn = db.connect()
+        cursor = conn.cursor()
         sql = "select d.day as day, f.korean as food_name, f.calories as cal, f.gram as gram from diet as d JOIN food as f on d.food_id = f.food_id where user_id= %d and DATE(date)='%s' ORDER BY day "%(userid, date)
+        print(sql)
         cursor.execute(sql)
         result = cursor.fetchall()
-        
+        db.close(conn)
         return result

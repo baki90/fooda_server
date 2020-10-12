@@ -4,15 +4,17 @@ from flask import request
 import utils
 import db
 
-cursor = db.connect()
-
 
 class User(Resource):
     def get(self): #if using post method
+        
+        conn = db.connect()
+        cursor = conn.cursor()
         email = str(request.args.get('email'))
         sql = "select * from user where email = '%s'"%(email)
         cursor.execute(sql)
         result = cursor.fetchall()
+        db.close(conn)
         if len(result) >0:
             return result[0]
         else: return {'result' :'fail'}
@@ -21,9 +23,12 @@ class UserHcal(Resource):
     def get(self):
         email = str(request.args.get('email'))
 
+        conn = db.connect()
+        cursor = conn.cursor()
         sql = "SELECT * FROM user WHERE email='%s'"%(email)
         cursor.execute(sql)
         result = cursor.fetchall()
+        db.close(conn)
         if len(result) > 0:
             if result[0]['sex'] =='F':
                 age = result[0]['age']

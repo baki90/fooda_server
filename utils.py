@@ -1,19 +1,26 @@
 import db
 from passlib.hash import sha256_crypt
 
-cursor = db.connect()
 def isUser(userid):
+    conn = db.connect()
+    cursor = conn.cursor()
+
     sql = "SELECT * FROM user WHERE email='%s'"%(userid)
     cursor.execute(sql)
     result = cursor.fetchall()
+    db.close(conn)
     if len(result) >0:
         return True
     else: return False
 
 def userLogin(userid, password):
+    conn = db.connect()
+    cursor = conn.cursor()
+
     sql = "SELECT * FROM user WHERE email='%s'"%(userid)
     cursor.execute(sql)
     result = cursor.fetchall()
+    db.close(conn)
     if len(result) >0:
         if (password == result[0]['password']):
             return True
@@ -21,17 +28,25 @@ def userLogin(userid, password):
     else: return False
 
 def userId(userid):
+    conn = db.connect()
+    cursor = conn.cursor()
+
     sql = "SELECT * FROM user WHERE email='%s'"%(userid)
     cursor.execute(sql)
     result = cursor.fetchall()
+    db.close(conn)
     if len(result) >0:
         return result[0]['id']
     else: return False
 
 def userhcal(email):
+    conn = db.connect()
+    cursor = conn.cursor()
+
     sql = "SELECT * FROM user WHERE email='%s'"%(email)
     cursor.execute(sql)
     result = cursor.fetchall()
+    db.close(conn)
     if len(result) > 0:
         if result[0]['sex'] =='F':
             age = result[0]['age']
