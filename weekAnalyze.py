@@ -2,15 +2,18 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import db
+from io import BytesIO
 
 def drawGraph(tan, dan, ji):
-    labels = ['carbohydrate', 'fat', 'protein']
+    labels = ['carbohydrate', 'protein', 'fat']
     colors = ['yellowgreen', 'lightgreen', 'green']
     ratio = [tan, dan, ji]
 
     plt.pie(ratio, labels=labels, colors=colors, autopct='%1.1f%%', shadow=False, startangle=90)
-    plt.savefig('draw.png', transparent=True)
-    return plt
+    img = BytesIO()
+    plt.savefig(img, transparent=True)
+    img.seek(0)
+    return img
 
 #사용자의 주간 섭취율을 탄, 단, 지 순으로 반환함
 def weekAnalyze(userid):
@@ -29,11 +32,14 @@ def personType(userid):
     dan /= total 
     ji /= total
     style = ''
+    print(tan)
+    print(dan)
+    print(ji)
     if tan > 0.6:
         style += '탄수화물 과다 '
     elif tan < 0.5:
         style += '탄수화물 과소 '
-    if dan > 0.2:
+    if dan > 0.25:
         style += '단백질 과다 '
     elif dan < 0.1:
         style += '단백질 과소 '
