@@ -13,6 +13,7 @@ def drawGraph(tan, dan, ji):
     img = BytesIO()
     plt.savefig(img, transparent=True)
     img.seek(0)
+    plt.clf()
     return img
 
 #사용자의 주간 섭취율을 탄, 단, 지 순으로 반환함
