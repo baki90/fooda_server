@@ -6,7 +6,7 @@ from io import BytesIO
 
 def drawGraph(tan, dan, ji):
     labels = ['carbohydrate', 'protein', 'fat']
-    colors = ['yellowgreen', 'lightgreen', 'green']
+    colors = ['yellowgreen', 'lightgreen', 'yellow']
     ratio = [tan, dan, ji]
 
     plt.pie(ratio, labels=labels, colors=colors, autopct='%1.1f%%', shadow=False, startangle=90)
