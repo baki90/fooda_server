@@ -5,6 +5,7 @@ import utils
 
 class Login(Resource):
     def post(self): #if using post method
+        print(request.form)
         email = str(request.form['email'])
         password = request.form['password']
         

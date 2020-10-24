@@ -28,6 +28,7 @@ def nutrient(foodname):
 
 class AnalyzeDiet(Resource):
     def post(self): #if using post method
+        print("hello")
         value = request.form['token']
         foodImage = request.files['uploaded_file'] #download file from application
         foodImage.save('food.png')

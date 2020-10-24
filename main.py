@@ -10,7 +10,9 @@ from diet import AnalyzeDiet, UploadDiet, TotalDiet,TotalDietList
 from login import Login
 from register import Register
 from user import User, UserHcal
-from recommend import AnalyzePerson, AnalyzeImage
+from recommend import AnalyzePerson, AnalyzeImage, AnalyzeTotalDiet
+from board import GetPostByBoardId
+from recipe import RecommendRecipe
 
 app = Flask(__name__)
 CORS(app)
@@ -33,6 +35,11 @@ if __name__ == '__main__':
     api.add_resource(UserHcal, '/userHcal')
     api.add_resource(AnalyzePerson, '/analyzePerson')
     api.add_resource(AnalyzeImage, '/analyzeImage')
+    api.add_resource(AnalyzeTotalDiet, '/analyzeTotalDiet')
+
+    api.add_resource(RecommendRecipe, '/recipe')
+    api.add_resource(GetPostByBoardId, '/getPostbyboardid')
+
 
 
 

@@ -40,13 +40,13 @@ def personType(userid):
         style += '탄수화물 과다 '
     elif tan < 0.5:
         style += '탄수화물 과소 '
-    if dan > 0.25:
+    if dan > 0.3:
         style += '단백질 과다 '
-    elif dan < 0.1:
+    elif dan < 0.2:
         style += '단백질 과소 '
-    if ji > 0.2:
+    if ji > 0.25:
         style += '지방 과다 '
-    elif ji < 0.1:
+    elif ji < 0.15:
         style += '지방 과소 '
 
     if style=='':

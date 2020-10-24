@@ -4,12 +4,15 @@ import urllib
 
 
 def foodCrawling(foodname):
+    foodname = foodname.split('/')[0]
+    print(foodname)
     url = "https://www.10000recipe.com" #만개의 레시피
     requrl = url +"/recipe/list.html?q=" + urllib.parse.quote(foodname) #한글 인코딩
     print(requrl)
     sourcecode = urllib.request.urlopen(requrl).read()
     soup = BeautifulSoup(sourcecode, "html.parser")
-    link = soup.find_all(class_='common_sp_link')[0]['href'] #최 앞에 있는 레시피
+    link = soup.find_all(class_='common_sp_link')[2]['href'] #최 앞에 있는 레시피
+    print(link)
 
     requrl = url + link #해당 식단의 레시피 페이지를 크롤링한다.
     req = urllib.request.Request(requrl)
@@ -38,4 +41,6 @@ def foodCrawling(foodname):
         i += 1
         step.append(str(i) +'. ' + n.get_text().replace('\n',' '))
     
-    return title, level, source, step
+    return {"result": "success", "title" :title, "level" :level, "source": source, "step": step}
+
+
